@@ -25,11 +25,18 @@ class Observer{
   }
   walk(){
     Object.keys(data).forEach(key => {
-      defineReactive(data, key, data[key])
+        defineReactive(data, key, data[key])
     })
   }
 }
+function isObject(val){
+  if(Object.prototype.toString.call(val) == '[object Object]'){
+    return true
+  }
+}
 function defineReactive(data, key, val){
+  // console.log(val)
+  // observe(val)
   let dep = new Dep()
   Object.defineProperty(data, key, {
     enumerable: true,
@@ -39,11 +46,12 @@ function defineReactive(data, key, val){
       return val
     },
     set(newVal){
-      dep.notify()
       val = newVal
+      dep.notify()
     }
   })
 }
+
 class Watcher{
   constructor(exp, cb){
     this.exp = exp
@@ -70,20 +78,24 @@ class Dep{
 
 let data = {
   name: 'Helen',
-  age: 28
+  age: 100,
+  boyf: {
+    name: 'Glowd',
+    age: 200
+  }
 }
 observe(data)
 new Watcher('age', () => {
   console.log('age has been changed')
 })
 
-// new Watch('age', () => {
-//   console.log(1)
-// })
-// new Watch('boyf.age', () => {
-//   console.log('change')
-// })
+new Watcher('age', () => {
+  console.log(1)
+})
+new Watcher('boyf.age', () => {
+  console.log('boyf.age change')
+})
 
 setTimeout(() => {
-data.age = 18
+  data.age = 18
 }, 1000)

@@ -4,19 +4,19 @@
 ```
 let data = {
     name: 'Helen',
-    age: 18,
+    age: 100,
     boyf: {
       name: 'Glowd',
-      age: 28
+      age: 200
     }
 }
 
 observer(data)
 
-new Watch('age', () => {
+new Watchr('age', () => {
     console.log(1)
 })
-new Watch('boyf.age', () => {
+new Watchr('boyf.age', () => {
     console.log('change')
 })
 
