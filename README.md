@@ -8,13 +8,20 @@ let data = {
     boyf: {
       name: 'Glowd',
       age: 200
+    },
+    a: 1,
+    b: 2
+}
+let computed: {
+    sum(){
+        return data.a + data.b
     }
 }
 
 observer(data)
 
-new Watchr('age', () => {
-    console.log(1)
+new Watchr(computed.sum, val => {
+    console.log(val)
 })
 new Watchr('boyf.age', () => {
     console.log('change')
