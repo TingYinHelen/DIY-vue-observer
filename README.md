@@ -28,7 +28,7 @@ new Watchr('boyf.age', () => {
 })
 
 setTimeout(() => {
-  data.boyf.age = 18
+  data.a = 100
 }, 1000)
 ```
 在node环境下运行
