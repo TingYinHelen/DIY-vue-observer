@@ -35,8 +35,6 @@ function isObject(val){
   }
 }
 function defineReactive(data, key, val){
-  // console.log(val)
-  // observe(val)
   let dep = new Dep()
   Object.defineProperty(data, key, {
     enumerable: true,
@@ -57,7 +55,11 @@ class Watcher{
     this.exp = exp
     this.cb = cb
     Watcher.target = this
-    this.value = data[exp]
+    if(typeof exp == 'function'){
+      this.value = exp()
+    }else{
+      this.value = data[exp]
+    }
   }
 }
 class Dep{
@@ -69,7 +71,7 @@ class Dep{
   }
   notify(){
     this.depends.forEach(depend => {
-      depend.cb()
+      depend.cb(depend.value)
     })
   }
 }
@@ -82,20 +84,22 @@ let data = {
   boyf: {
     name: 'Glowd',
     age: 200
+  },
+  a: 1,
+  b: 2
+}
+let computed = {
+  sum(){
+    return data.a + data.b
   }
 }
 observe(data)
-new Watcher('age', () => {
-  console.log('age has been changed')
+new Watcher('a', val => {
+  console.log(val)
 })
-
-new Watcher('age', () => {
-  console.log(1)
+new Watcher(computed.sum, val => {
+  console.log(val)
 })
-new Watcher('boyf.age', () => {
-  console.log('boyf.age change')
-})
-
 setTimeout(() => {
-  data.age = 18
+  data.a = 18
 }, 1000)
